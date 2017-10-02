@@ -7,7 +7,8 @@ import logging
 LOG_LEVEL = logging.INFO
 LOG_FILE = "/home/pi/PnR-Final/log_robot.log"  # don't forget to make this file!
 LOG_FORMAT = "%(asctime)s %(levelname)s %(message)s"
-logging.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, level=LOG_LEVEL)
+logging.basicConfig(filpi
+me=LOG_FILE, format=LOG_FORMAT, level=LOG_LEVEL)
 
 
 class Piggy(pigo.Pigo):
@@ -21,7 +22,8 @@ class Piggy(pigo.Pigo):
         # YOU DECIDE: How close can an object get (cm) before we have to stop?
         self.STOP_DIST = 30
         # YOU DECIDE: What left motor power helps straighten your fwd()?
-        self.LEFT_SPEED = 140
+        self.LEFT_SPEED = 135
+
         # YOU DECIDE: What left motor power helps straighten your fwd()?
         self.RIGHT_SPEED = 140
         # This one isn't capitalized because it changes during runtime, the others don't
@@ -57,6 +59,21 @@ class Piggy(pigo.Pigo):
         """executes a series of methods that add up to a compound dance"""
         print("\n---- LET'S DANCE ----\n")
         ##### WRITE YOUR FIRST PROJECT HERE
+        self.to_the_left()
+        # self.to_the_right()
+        # self.now_whip()
+        # self.dab()
+        # self.drop_it_by_yourself()
+
+    def to_the_left(self):
+        """subroutine of dance method"""
+        for x in range(3):
+             self.encR(10)
+             self.encR(5)
+
+
+
+
 
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
