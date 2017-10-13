@@ -107,9 +107,9 @@ class Piggy(pigo.Pigo):
             self.servo(ang)
             time.sleep(1)
 
-    def dab(self):
-        for x in range(4)
-            s
+    #def dab(self):
+        #for x in range(4)
+
 
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
