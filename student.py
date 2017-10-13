@@ -2,6 +2,10 @@ import pigo
 import time  # import just in case students need
 import random
 
+import pigo
+import time  # import just in case students need
+import random
+
 # setup logs
 import logging
 LOG_LEVEL = logging.INFO
@@ -17,12 +21,12 @@ class Piggy(pigo.Pigo):
         """The robot's constructor: sets variables and runs menu loop"""
         print("I have been instantiated!")
         # Our servo turns the sensor. What angle of the servo( ) method sets it straight?
-        self.MIDPOINT = 90
+        self.MIDPOINT = 112
         # YOU DECIDE: How close can an object get (cm) before we have to stop?
-        self.STOP_DIST = 30
+        self.SAFE_STOP_DIST = 30
+        self.HARD_STOP_DIST = 15
         # YOU DECIDE: What left motor power helps straighten your fwd()?
-        self.LEFT_SPEED = 135
-
+        self.LEFT_SPEED = 140
         # YOU DECIDE: What left motor power helps straighten your fwd()?
         self.RIGHT_SPEED = 140
         # This one isn't capitalized because it changes during runtime, the others don't
@@ -42,6 +46,7 @@ class Piggy(pigo.Pigo):
         menu = {"n": ("Navigate forward", self.nav),
                 "d": ("Dance", self.dance),
                 "c": ("Calibrate", self.calibrate),
+                "t": ("Turn test", self.turn_test),
                 "s": ("Check status", self.status),
                 "q": ("Quit", quit_now)
                 }
@@ -58,21 +63,53 @@ class Piggy(pigo.Pigo):
         """executes a series of methods that add up to a compound dance"""
         print("\n---- LET'S DANCE ----\n")
         ##### WRITE YOUR FIRST PROJECT HERE
-        self.to_the_left()
-        # self.to_the_right()
-        # self.now_whip()
-        # self.dab()
-        # self.drop_it_by_yourself()
+        if(self.safety_check()):
+            self.to_the_left()
+            self.to_the_right()
+            self.whip()
+            #self.dab()
+            #self.walk_it_by_yourself()
+
+
+
+    def safety_check(self):
+        self.servo(self.MIDPOINT) # look straight ahead
+        for loop in range(4):
+            if not self.is_clear():
+                print("NOT GOING TO DANCE!")
+                return False
+            print("Check #%d" % (loop + 1))
+            self.encR(8)
+        print("Safe to dance!")
+        return True
+
+        # Loop 3 times
+            # Turn 60 deg
+        # scan again
+
+
+
 
     def to_the_left(self):
-        """subroutine of dance method"""
+        """Subroutine of dance method"""
         for x in range(3):
-             self.encR(10)
-             self.encR(5)
+            self.encR(10)
+            self.encF(5)
+
+    def to_the_right(self):
+        for x in range(3):
+            self.encL(10)
+            self.encF(5)
 
 
+    def whip (self):
+        for ang in range(30,90,120):
+            self.servo(ang)
+            time.sleep(1)
 
-
+    def dab(self):
+        for x in range(4)
+            s
 
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
@@ -80,9 +117,22 @@ class Piggy(pigo.Pigo):
         print("-----------! NAVIGATION ACTIVATED !------------\n")
         print("-------- [ Press CTRL + C to stop me ] --------\n")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
+        while True:
+            if self.is_clear():
+                self.cruise()
+            else:
+                self.encR(10)
+
+    def cruise(self):
+        """" drive straight while path is clear"""
+        self.fwd()
+        while self.dist() > self.SAFE_STOP_DIST:
+            time.sleep(.5)
+        self.stop()
 
 
-####################################################
+
+                ####################################################
 ############### STATIC FUNCTIONS
 
 def error():
