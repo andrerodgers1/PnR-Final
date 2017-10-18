@@ -45,7 +45,7 @@ class Piggy(pigo.Pigo):
         # You may change the menu if you'd like to add an experimental method
         menu = {"n": ("Navigate forward", self.nav),
                 "d": ("Dance", self.dance),
-                "o": ("Obstacle count" , self. calibrate)
+                "o": ("Obstacle count" , self. calibrate),
                 "c": ("Calibrate", self.calibrate),
                 "s": ("Check status", self.status),
                 "q": ("Quit", quit_now)
@@ -62,7 +62,8 @@ class Piggy(pigo.Pigo):
     def dance(self):
         """scans and estimates the number of obstacles within sight"""
         self.wide_scan()
-        found something = False
+        found_something = False
+        counter = 0
         for distance in self.scan:
             if distance in self.scan:
                 if distance and distance < 200 and not found_something:
