@@ -45,7 +45,7 @@ class Piggy(pigo.Pigo):
         # You may change the menu if you'd like to add an experimental method
         menu = {"n": ("Navigate forward", self.nav),
                 "d": ("Dance", self.dance),
-                "o": ("Obstacle count" , self.obstacle count),
+                "o": ("Obstacle count" , self.obstacle_count),
                 "c": ("Calibrate", self.calibrate),
                 "s": ("Check status", self.status),
                 "q": ("Quit", quit_now)
