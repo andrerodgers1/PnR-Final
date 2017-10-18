@@ -45,6 +45,7 @@ class Piggy(pigo.Pigo):
         # You may change the menu if you'd like to add an experimental method
         menu = {"n": ("Navigate forward", self.nav),
                 "d": ("Dance", self.dance),
+                "o": ("Obstacle count" , self. calibrate)
                 "c": ("Calibrate", self.calibrate),
                 "s": ("Check status", self.status),
                 "q": ("Quit", quit_now)
@@ -59,15 +60,17 @@ class Piggy(pigo.Pigo):
 
     # YOU DECIDE: How does your GoPiggy dance?
     def dance(self):
-        """executes a series of methods that add up to a compound dance"""
-        print("\n---- LET'S DANCE ----\n")
-        ##### WRITE YOUR FIRST PROJECT HERE
-        if(self.safety_check()):
-            self.to_the_left()
-            self.to_the_right()
-            self.whip()
-            #self.dab()
-            #self.walk_it_by_yourself()
+        """scans and estimates the number of obstacles within sight"""
+        self.wide_scan()
+        found something = False
+        for distance in self.scan:
+            if distance in self.scan:
+                if distance and distance < 200 and not found_something:
+                    found_something = True
+                    print("Object #%d found, I think" % counter)
+                if distance and  distance > 200 and found_something:
+                    found_something = False
+                    counter += 1
 
 
 
