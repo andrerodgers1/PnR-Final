@@ -1,8 +1,4 @@
-import pigo
-import time  # import just in case students need
-import random
-
-import pigo
+stimport pigo
 import time  # import just in case students need
 import random
 
@@ -21,14 +17,14 @@ class Piggy(pigo.Pigo):
         """The robot's constructor: sets variables and runs menu loop"""
         print("I have been instantiated!")
         # Our servo turns the sensor. What angle of the servo( ) method sets it straight?
-        self.MIDPOINT = 112
+        self.MIDPOINT = 77
         # YOU DECIDE: How close can an object get (cm) before we have to stop?
         self.SAFE_STOP_DIST = 30
         self.HARD_STOP_DIST = 15
         # YOU DECIDE: What left motor power helps straighten your fwd()?
-        self.LEFT_SPEED = 140
+        self.LEFT_SPEED = 90
         # YOU DECIDE: What left motor power helps straighten your fwd()?
-        self.RIGHT_SPEED = 140
+        self.RIGHT_SPEED = 110
         # This one isn't capitalized because it changes during runtime, the others don't
         self.turn_track = 0
         # Our scan list! The index will be the degree and it will store distance
@@ -44,8 +40,8 @@ class Piggy(pigo.Pigo):
         ## This is a DICTIONARY, it's a list with custom index values
         # You may change the menu if you'd like to add an experimental method
         menu = {"n": ("Navigate forward", self.nav),
+                "o": ("Obstacle count", self.obstacle_count),
                 "d": ("Dance", self.dance),
-                "o": ("Obstacle count" , self.obstacle_count),
                 "c": ("Calibrate", self.calibrate),
                 "s": ("Check status", self.status),
                 "q": ("Quit", quit_now)
@@ -58,87 +54,118 @@ class Piggy(pigo.Pigo):
         # activate the item selected
         menu.get(ans, [None, error])[1]()
 
-    # YOU DECIDE: How does your GoPiggy dance?
-    def obstacle_count (self):
+    def full_obstacle_count(self):
+        counter = 0
+        for x in range(4):
+            counter += self.obstacle_count()
+            self.encR(6)
+        print("\n-------I see %d object(s)total------\n" % counter)
+
+    def obstacle_count(self):
         """scans and estimates the number of obstacles within sight"""
-        self.wide_scan()
+        self.wide_scan(count=5)
         found_something = False
         counter = 0
+        threshold = 60
         for distance in self.scan:
-            if distance in self.scan:
-                if distance and distance < 200 and not found_something:
-                    found_something = True
-                    print("Object #%d found, I think" % counter)
-                if distance and  distance > 200 and found_something:
-                    found_something = False
-                    counter += 1
+            if distance and distance < threshold and not found_something:
+                found_something = True
+                counter += 1
+                print("Object #%d found, I think" % counter)
+            if distance and distance > threshold and found_something:
+                found_something = False
+        print("\n-------I see %d object(s)------\n" % counter)
+        return counter
 
 
+    # YOU DECIDE: How does your GoPiggy dance?
+    def dance(self):
+        """executes a series of methods that add up to a compound dance"""
+        print("\n---- LET'S DANCE ----\n")
+        ##### WRITE YOUR FIRST PROJECT HERE
+
+        if self.safety_check():
+            self.to_the_right()
+            self.to_the_left()
+            self.now_dab()
+            self.now_spin()
+            self.now_walk_it_by_yourself()
 
     def safety_check(self):
-        self.servo(self.MIDPOINT) # look straight ahead
+        self.servo(self.MIDPOINT)  # look straight ahead
         for loop in range(4):
             if not self.is_clear():
                 print("NOT GOING TO DANCE!")
                 return False
-            print("Check #%d" % (loop + 1))
             self.encR(8)
+            print("Check #%d" % (loop + 1))
         print("Safe to dance!")
         return True
 
-        # Loop 3 times
-            # Turn 60 deg
-        # scan again
+                # Loop 3 times
+                # Turn 60 deg
+                # scan again
 
-
-
+    def to_the_right(self):
+        """subroutine of dance method"""
+        for x in range(3):
+            self.servo(160)
+            self.encR(20)
+            self.encF(5)
 
     def to_the_left(self):
-        """Subroutine of dance method"""
+        """subroutine of dance method"""
         for x in range(3):
             self.encR(10)
             self.encF(5)
 
-    def to_the_right(self):
+    def now_dab(self):
+        """subroutine of dance method"""
         for x in range(3):
-            self.encL(10)
+            self.encR(10)
             self.encF(5)
 
+    def now_spin(self):
+        """subroutine of dance speed"""
+        for x in range (3):
+            self.encR(10)
+            self.encF(5)
+            self.servo(90, 60, -90)
 
-    def whip (self):
-        for ang in range(30,90,120):
-            self.servo(ang)
-            time.sleep(1)
-
-    #def dab(self):
-        #for x in range(4)
-
+    def now_walk_it_by_yourself(self):
+        for x in range(3):
+            self.encR(10)
+            self.encF(5)
 
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
         logging.debug("Starting the nav method")
-        print("-----------! NAVIGATION ACTIVATED !------------\n")
-        print("-------- [ Press CTRL + C to stop me ] --------\n")
-        print("-----------! NAVIGATION ACTIVATED !------------\n")
-        for x in range(20):
+        print("---------! NAVIGATION ACTIVATED !----------\n")
+        print("------ [ Press CTRL + C to stop me ] ------\n")
+        print("---------! NAVIGATION ACTIVATED !----------\n")
+        while True:
             if self.is_clear():
                 self.cruise()
             else:
                 self.encR(10)
 
-    def cruise(self):
-        """" drive straight while path is clear"""
+    def cruise (self):
+        """drive straight while path is clear"""
         self.fwd()
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.5)
+        self.stop()
 
-
-
-                ####################################################
+    def safe_turn (self):
+        """rotate until path is clear"""
+        self.servo()
+        self.right_rot()
+        while self.dist() > self.SAFE_STOP_DIST:
+         self.stop()
+####################################################
 ############### STATIC FUNCTIONS
 
 def error():
-    """records general, less specific error"""
     logging.error("ERROR")
     print('ERROR')
 
