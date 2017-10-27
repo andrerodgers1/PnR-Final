@@ -1,4 +1,4 @@
-stimport pigo
+import pigo
 import time  # import just in case students need
 import random
 
