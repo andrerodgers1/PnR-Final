@@ -54,28 +54,30 @@ class Piggy(pigo.Pigo):
         # activate the item selected
         menu.get(ans, [None, error])[1]()
 
+
     def full_obstacle_count(self):
         counter = 0
         for x in range(4):
             counter += self.obstacle_count()
-            self.encR(6)
-        print("\n-------I see %d object(s)total------\n" % counter)
+            self.encR(8)
+        print("\n-------I see %d object(s) total------\n" % counter)
 
     def obstacle_count(self):
         """scans and estimates the number of obstacles within sight"""
-        self.wide_scan(count=5)
-        found_something = False
-        counter = 0
-        threshold = 60
-        for distance in self.scan:
-            if distance and distance < threshold and not found_something:
-                found_something = True
-                counter += 1
-                print("Object #%d found, I think" % counter)
-            if distance and distance > threshold and found_something:
-                found_something = False
-        print("\n-------I see %d object(s)------\n" % counter)
-        return counter
+        for x in range(65, 115):
+            self.wide_scan(count=5)
+            found_something = False
+            counter = 0
+            threshold = 60
+            for self.scan[x] in self.scan:
+                if self.scan[x] and self.scan[x] < threshold and not found_something:
+                    found_something = True
+                    counter += 1
+                    print("Object #%d found, I think" % counter)
+                if self.scan[x] and self.scan[x] > threshold and found_something:
+                    found_something = False
+            print("\n-------I see %d object(s)------\n" % counter)
+            return counter
 
 
     # YOU DECIDE: How does your GoPiggy dance?
@@ -125,7 +127,7 @@ class Piggy(pigo.Pigo):
             self.encR(10)
             self.encF(5)
 
-    def now_spin(self):
+    def now_whip(self):
         """subroutine of dance speed"""
         for x in range (3):
             self.encR(10)
@@ -140,21 +142,25 @@ class Piggy(pigo.Pigo):
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
         logging.debug("Starting the nav method")
-        print("---------! NAVIGATION ACTIVATED !----------\n")
-        print("------ [ Press CTRL + C to stop me ] ------\n")
-        print("---------! NAVIGATION ACTIVATED !----------\n")
+        print("-----------! NAVIGATION ACTIVATED !------------\n")
+        print("-------- [ Press CTRL + C to stop me ] --------\n")
+        print("-----------! NAVIGATION ACTIVATED !------------\n")
+        # robot scans around itself and moves to the largest open area
+        self.full_obstacle_count()
         while True:
             if self.is_clear():
                 self.cruise()
             else:
-                self.encR(10)
+                self.servo(self.dist(scan[x]))
+                self.encR(x)
+                self.cruise()
 
-    def cruise (self):
+    def cruise(self):
         """drive straight while path is clear"""
         self.fwd()
+        print("about to drive forward")
         while self.dist() > self.SAFE_STOP_DIST:
-            time.sleep(.5)
-        self.stop()
+            time.sleep(.1)
 
     def safe_turn (self):
         """rotate until path is clear"""
