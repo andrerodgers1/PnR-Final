@@ -150,26 +150,27 @@ class Piggy(pigo.Pigo):
         elif self.turn_track < 0:
             self.encR(abs(self.turn_track))
 
-
     def nav(self):
-
         """auto pilots and attempts to maintain original heading"""
         logging.debug("Starting the nav method")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
         print("-------- [ Press CTRL + C to stop me ] --------\n")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
-        # robot scans around itself and moves to the largest open area
-        self.full_obstacle_count()
+        self.obstacle_count()
+        # counts obstacles before beginning nav
         while True:
             if self.is_clear():
                 self.cruise()
             else:
-                self.encR(3)
+                self.encR(8)
                 if self.is_clear():
                     self.cruise()
-                    # changes course, checks surroundings, if clear, moves forward
-            self.restore_heading()
-                # returns to original position
+                else:
+                    self.encL(27)
+                    if self.is_clear():
+                        self.cruise()
+                        # check right and go if clear
+                        # look left twice and then go
 
     def cruise(self):
         """drive straight while path is clear"""
@@ -178,7 +179,10 @@ class Piggy(pigo.Pigo):
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.1)
             #ToDO: FASTER
+        self.stop()
+        # back up?
 
+        
     def safe_turn (self):
         """rotate until path is clear"""
         self.servo()
