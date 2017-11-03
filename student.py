@@ -168,7 +168,7 @@ class Piggy(pigo.Pigo):
                 if self.is_clear():
                     self.cruise()
                     # changes course, checks surroundings, if clear, moves forward
-                self.restore_heading()
+            self.restore_heading()
                 # returns to original position
 
     def cruise(self):
