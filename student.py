@@ -177,12 +177,12 @@ class Piggy(pigo.Pigo):
         self.fwd()
         print("about to drive forward")
         while self.dist() > self.SAFE_STOP_DIST:
-            time.sleep(.1)
-            #ToDO: FASTER
+            time.sleep(.05)
+             #ToDO: FASTER
         self.stop()
         # back up?
 
-        
+
     def safe_turn (self):
         """rotate until path is clear"""
         self.servo()
