@@ -178,7 +178,7 @@ class Piggy(pigo.Pigo):
         print("about to drive forward")
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.05)
-             #ToDO: FASTER
+            next() #ToDO: FASTER
         self.stop()
         # back up?
 
