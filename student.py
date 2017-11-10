@@ -154,15 +154,17 @@ class Piggy(pigo.Pigo):
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
         logging.debug("Starting the nav method")
-        print("-----------! NAVIGATION ACTIVATED !------------\n")
-        print("-------- [ Press CTRL + C to stop me ] --------\n")
-        print("-----------! NAVIGATION ACTIVATED !------------\n")
-        right now = datetime.datetime.utcnow()
-        print ("It took you %d seconds to run this" % difference )
-        difference = (right_now - self.start_time ) . seconds
-
-        self.obstacle_count()
-
+        print("---------! NAVIGATION ACTIVATED !----------\n")
+        print("------ [ Press CTRL + C to stop me ] ------\n")
+        print("---------! NAVIGATION ACTIVATED !----------\n")
+        right_now = datetime.datetime.utcnow()
+        difference = (right_now - self.start_time).seconds
+        print("It took you %d seconds to run this" % difference)
+        while True:
+            if self.is_clear():
+                self.cruise()
+            else:
+                self.encR(10)
 
         # counts obstacles before beginning nav
         while True:
