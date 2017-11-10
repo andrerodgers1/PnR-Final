@@ -160,11 +160,14 @@ class Piggy(pigo.Pigo):
         right_now = datetime.datetime.utcnow()
         difference = (right_now - self.start_time).seconds
         print("It took you %d seconds to run this" % difference)
+
+        '''
         while True:
             if self.is_clear():
                 self.cruise()
             else:
-                self.encR(8)
+                self.encR(10)
+        '''
 
         # counts obstacles before beginning nav
         while True:
@@ -173,11 +176,11 @@ class Piggy(pigo.Pigo):
             else:
                 self.encR(8)
                 if self.is_clear():
-                    self.cruise()
+                    continue
                 else:
                     self.encL(27)
                     if self.is_clear():
-                        self.cruise()
+                        continue
                         # check right and go if clear
                         #  look left twice and then go
 
@@ -201,7 +204,6 @@ class Piggy(pigo.Pigo):
         print("about to drive forward")
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.05)
-            next() #ToDO: FASTER
         self.stop()
         # back up?
 
