@@ -172,7 +172,22 @@ class Piggy(pigo.Pigo):
         # difference = (right_now - self.start_time).seconds
         # print ("It took you %d seconds to run this" % difference)
 
-        while True:
+
+        def nav_cruise(self):
+            self.servo(self.MIDPOINT)
+            self.cruise()
+
+        def cruise(self):
+            """drive straight while path is clear"""
+            print("about to drive forward")
+            self.fwd()
+            while self.dist() > self.SAFE_STOP_DIST:
+                time.sleep(.05)
+            self.stop()
+
+
+
+            while True:
             # if path is clear, robot will cruise
             self.restore_heading()
             if self.is_clear():
