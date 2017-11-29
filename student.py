@@ -106,9 +106,7 @@ class Piggy(pigo.Pigo):
         print("Safe to dance!")
         return True
 
-                # Loop 3 times
-                # Turn 60 deg
-                # scan again
+
 
     def to_the_right(self):
         """subroutine of dance method"""
@@ -151,38 +149,7 @@ class Piggy(pigo.Pigo):
         elif self.turn_track < 0:
             self.encR(abs(self.turn_track))
 
-    def nav(self):
-        """auto pilots and attempts to maintain original heading"""
-        logging.debug("Starting the nav method")
-        print("---------! NAVIGATION ACTIVATED !----------\n")
-        print("------ [ Press CTRL + C to stop me ] ------\n")
-        print("---------! NAVIGATION ACTIVATED !----------\n")
-        right_now = datetime.datetime.utcnow()
-        difference = (right_now - self.start_time).seconds
-        print("It took you %d seconds to run this" % difference)
 
-        '''
-        while True:
-            if self.is_clear():
-                self.cruise()
-            else:
-                self.encR(10)
-        '''
-
-        # counts obstacles before beginning nav
-        while True:
-            if self.is_clear():
-                self.cruise()
-            else:
-                self.encR(8)
-                if self.is_clear():
-                    continue
-                else:
-                    self.encL(27)
-                    if self.is_clear():
-                        continue
-                        # check right and go if clear
-                        #  look left twice and then go
 
     def smooth_turn(self):
         self .right_rot()
@@ -195,7 +162,52 @@ class Piggy(pigo.Pigo):
                 self.stop()
             time.sleep(.2)
 
+    def nav(self):
+        """auto pilots and attempts to maintain original heading"""
+        logging.debug("Starting the nav method")
+        print("-----------! NAVIGATION ACTIVATED !------------\n")
+        print("-------- [ Press CTRL + C to stop me ] --------\n")
+        print("-----------! NAVIGATION ACTIVATED !------------\n")
+        # right_now = datetime.datetime.utcnow()
+        # difference = (right_now - self.start_time).seconds
+        # print ("It took you %d seconds to run this" % difference)
 
+        while True:
+            # if path is clear, robot will cruise
+            self.restore_heading()
+            if self.is_clear():
+                self.servo(self.MIDPOINT)
+                self.cruise()
+            else:
+                self.check_left:()
+                if self.is_clear():
+                    # if path after turning left is clear, robot will cruise
+                    self.cruise()
+                else:
+                    # if path after turning left is not clear, robot will turn right one more time to check
+                    self.check_left()
+                    if self.is_clear():
+                        self.cruise():
+                    else:
+                        # if path after checking left twice is not clear, robot will return to midpoint
+                        print("Path to the right is not clear, turning to midpoint.")
+                        self.restore_heading()
+                        time.sleep(2)
+                        if self.is_clear():
+                            self.cruise()
+                        else:
+                            # if midpoint is not clear, robot will turn right and check
+                            self.check_right()
+                            if self.is_clear():
+                                self.cruise()
+                            else:
+                                # if path after turning right is not clear, robot will turn right one more time to check
+                                self.check_right()
+                                if self.is_clear():
+                                    self.cruise()
+                                else:
+                                    # if path after turning left twice is not clear, robot will back up
+                                    self.encB(5)
 
 
     def cruise(self):
@@ -204,7 +216,9 @@ class Piggy(pigo.Pigo):
         print("about to drive forward")
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.05)
-        self.stop()
+
+
+ self.stop()
         # back up?
 
 
