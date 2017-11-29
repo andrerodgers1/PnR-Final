@@ -162,8 +162,13 @@ class Piggy(pigo.Pigo):
                 self.stop()
             time.sleep(.2)
 
+
+     """drive straight while path is clear"""
+        self.fwd()
+        print("about to drive forward")
+
     def nav(self):
-        """auto pilots and attempts to maintain original heading"""
+     """auto pilots and attempts to maintain original heading"""
         logging.debug("Starting the nav method")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
         print("-------- [ Press CTRL + C to stop me ] --------\n")
@@ -171,66 +176,60 @@ class Piggy(pigo.Pigo):
         # right_now = datetime.datetime.utcnow()
         # difference = (right_now - self.start_time).seconds
         # print ("It took you %d seconds to run this" % difference)
-
-
-        def nav_cruise(self):
-            self.servo(self.MIDPOINT)
-            self.cruise()
-
-        def cruise(self):
-            """drive straight while path is clear"""
-            print("about to drive forward")
-            self.fwd()
-            while self.dist() > self.SAFE_STOP_DIST:
-                time.sleep(.05)
-            self.stop()
-
-
-
-            while True:
+        self.servo(self.MIDPOINT)
+        while True:
             # if path is clear, robot will cruise
             self.restore_heading()
             if self.is_clear():
-                self.servo(self.MIDPOINT)
+                print("Path is clear, moving forward.")
                 self.cruise()
             else:
-                self.check_left:()
+                print("Path is not clear, turning left.")
+                self.check_left()
                 if self.is_clear():
                     # if path after turning left is clear, robot will cruise
                     self.cruise()
                 else:
-                    # if path after turning left is not clear, robot will turn right one more time to check
+                    # if path after turning left is not clear, robot will turn left one more time to check
                     self.check_left()
                     if self.is_clear():
-                        self.cruise():
+                        self.cruise()
                     else:
-                        # if path after checking left twice is not clear, robot will return to midpoint
-                        print("Path to the right is not clear, turning to midpoint.")
-                        self.restore_heading()
-                        time.sleep(2)
+                        # if path after turning left is not clear, robot will turn left one more time to check
+                        self.check_left()
                         if self.is_clear():
                             self.cruise()
                         else:
-                            # if midpoint is not clear, robot will turn right and check
-                            self.check_right()
+                            # if path after checking left twice is not clear, robot will return to midpoint
+                            print("Path to the left is not clear, turning to midpoint.")
+                            self.restore_heading()
+                            time.sleep(2)
                             if self.is_clear():
+                                print("Path is clear, moving forward.")
                                 self.cruise()
                             else:
-                                # if path after turning right is not clear, robot will turn right one more time to check
+                                # if midpoint is not clear, robot will turn right and check
+                                print("Path is not clear, turning right.")
                                 self.check_right()
                                 if self.is_clear():
                                     self.cruise()
                                 else:
-                                    # if path after turning left twice is not clear, robot will back up
-                                    self.encB(5)
+                                    # if path after turning right is not clear, robot will turn right one more time to check
+                                    self.check_right()
+                                    if self.is_clear():
+                                        self.cruise()
+                                    else:
+                                        self.check_right()
+                                        if self.is_clear():
+                                            self.cruise()
+                                        else:
+                                            # if path after turning left twice is not clear, robot will back up
+                                            print("Paths are not clear, backing up.")
+                                            self.restore_heading()
+                                            self.encB(5
 
-
-    def cruise(self):
-        """drive straight while path is clear"""
-        self.fwd()
-        print("about to drive forward")
-        while self.dist() > self.SAFE_STOP_DIST:
-            time.sleep(.05)
+    while self.dist() > self.SAFE_STOP_DIST:
+        time.sleep(.05)
 
 
  self.stop()
