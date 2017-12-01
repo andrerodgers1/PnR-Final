@@ -169,8 +169,8 @@ class Piggy(pigo.Pigo):
         print("about to drive forward")
         self.fwd()
         while self.dist() > self.SAFE_STOP_DIST:
-            time.sleep(.05)
-            self.stop()
+        time.sleep(.1)
+        self.stop()
 
     def nav(self):
         """auto pilots and attempts to maintain original heading"""
