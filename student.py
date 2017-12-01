@@ -167,14 +167,10 @@ class Piggy(pigo.Pigo):
     def cruise(self):
         """drive straight while path is clear"""
         print("about to drive forward")
-        self.fwd()
         while self.dist() > self.SAFE_STOP_DIST:
+            self.fwd()
             time.sleep(.05)
-        self.stop()
-
-     """drive straight while path is clear"""
-        self.fwd()
-        print("about to drive forward")
+            self.stop()
 
     def nav(self):
      """auto pilots and attempts to maintain original heading"""
@@ -232,16 +228,10 @@ class Piggy(pigo.Pigo):
                                         if self.is_clear():
                                             self.cruise()
                                         else:
-                                            # if path after turning left twice is not clear, robot will back up
-                                            print("Paths are not clear, backing up.")
                                             self.restore_heading()
-                                            self.encB(5
+                                            self.encB(5)
 
-    while self.dist() > self.SAFE_STOP_DIST:
-        time.sleep(.05)
-
-
- self.stop()
+ #self.stop()
         # back up?
 
 
