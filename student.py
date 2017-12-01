@@ -162,7 +162,7 @@ class Piggy(pigo.Pigo):
                 self.stop()
             time.sleep(.2)
 
-    
+
 
     def cruise(self):
         """drive straight while path is clear"""
@@ -170,7 +170,7 @@ class Piggy(pigo.Pigo):
         self.fwd()
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.05)
-        self.stop
+        self.stop()
 
      """drive straight while path is clear"""
         self.fwd()
