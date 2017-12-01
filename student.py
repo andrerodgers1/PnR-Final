@@ -231,6 +231,16 @@ class Piggy(pigo.Pigo):
                                             self.restore_heading()
                                             self.encB(5)
 
+    def check_left(self):
+        self.servo(self.MIDPOINT)
+        self.encR(4)
+        time.sleep(1)
+
+    def check_right(self):
+        self.servo(self.MIDPOINT)
+        self.encL(4)
+        time.sleep(1)
+
  #self.stop()
         # back up?
 
