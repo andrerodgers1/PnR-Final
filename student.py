@@ -173,8 +173,8 @@ class Piggy(pigo.Pigo):
             self.stop()
 
     def nav(self):
-     """auto pilots and attempts to maintain original heading"""
-    #logging.debug("Starting the nav method")
+        """auto pilots and attempts to maintain original heading"""
+        logging.debug("Starting the nav method")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
         print("-------- [ Press CTRL + C to stop me ] --------\n")
         print("-----------! NAVIGATION ACTIVATED !------------\n")
