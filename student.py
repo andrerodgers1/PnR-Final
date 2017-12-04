@@ -173,29 +173,33 @@ class Piggy(pigo.Pigo):
         self.stop()
 
     def nav(self):
-        right_now = datetime.datetime.utcnow()
-        difference = (right_now - self.start_time).seconds
-        print("It took you %d seconds to run this" % difference)
-        self.servo(self.MIDPOINT)
+        turn_value = 7  # make this bigger? smaller?
         while True:
-            for x in range(2):
-                if self.is_clear():
-                    print("I have found an open area.")
-                    self.cruise()
-            for x in range(3):
-                self.encR(3)
-                if self.dist() > 15:
-                    print("I have found an open area.")
-                    time.sleep(2)
-                    self.cruise()
-            self.restore_heading()
-            for x in range(3):
-                self.encL(3)
-                if self.dist() > 10:
-                    print("I have found an open area.")
-                    time.sleep(2)
-                    self.cruise()
-            self.restore_heading()
+            if self.is_clear():
+                self.cruise()
+                self.stop()
+                self.encB(2)  # make this bigger?
+            else:
+                # check right
+                self.encR(turn_value)
+                self.servo(self.MIDPOINT)
+                dist_right = self.dist()
+                # go back to center
+                self.encL(turn_value)
+                # check left
+                self.encL(turn_value)
+                self.servo(self.MIDPOINT)
+                dist_left = self.dist()
+                # go back to center
+                self.encR(turn_value)
+                # decide on going right or left
+                if (dist_right > self.SAFE_STOP_DIST):
+                    self.encR(turn_value)
+                elif (dist_left > self.SAFE_STOP_DIST):
+                    self.encL(turn_value)
+                # if there's no option, back up
+                else:
+                    self.encB(4)  # make this bigger? smaller?
 
     def check_left(self):
         self.servo(self.MIDPOINT)
