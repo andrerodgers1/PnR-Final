@@ -162,8 +162,22 @@ class Piggy(pigo.Pigo):
                 self.stop()
             time.sleep(.2)
 
+    def cruise(self):
+        self.fwd()
+        while True:
+            self.servo(self.MIDPOINT)
+            if self.dist() < self.SAFE_STOP_DIST:
+                break
+            self.servo(self.MIDPOINT + 10)
+            if self.dist() < self.SAFE_STOP_DIST:
+                break
+            self.servo(self.MIDPOINT - 10)
+            if self.dist() < self.SAFE_STOP_DIST:
+                break
+        self.stop(
 
 
+    '''
     def cruise(self):
         """drive straight while path is clear"""
         print("about to drive forward")
@@ -171,6 +185,7 @@ class Piggy(pigo.Pigo):
         while self.dist() > self.SAFE_STOP_DIST:
             time.sleep(.1)
         self.stop()
+        '''
 
     def nav(self):
         turn_value = 7  # make this bigger? smaller?
